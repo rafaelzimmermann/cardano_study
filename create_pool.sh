@@ -15,6 +15,7 @@ stakevkey="$8"  # File
 stakeskey="$9"  # File
 stake_cert="${10}"
 genesis_file="${11}"
+paymentaddr2="${12}"
 
 hash=$(cardano-cli stake-pool metadata-hash --pool-metadata-file $metadata)
 tmp=`mktemp -d`
@@ -83,9 +84,9 @@ echo "Amount LL: $amount_ll"
 
 cardano-cli query utxo --address $paymentaddr --testnet-magic 1097911063
 
-tx_hash=$(cardano-cli query utxo --address $paymentaddr --testnet-magic 1097911063 | tail -n1 | awk '{print $1}')
-tx_ix=$(cardano-cli query utxo --address $paymentaddr --testnet-magic 1097911063 | tail -n1 | awk '{print $2}')
-balance=$(cardano-cli query utxo --address $paymentaddr --testnet-magic 1097911063 | tail -n1 | awk '{print $3}')
+tx_hash=$(cardano-cli query utxo --address $paymentaddr2 --testnet-magic 1097911063 | tail -n1 | awk '{print $1}')
+tx_ix=$(cardano-cli query utxo --address $paymentaddr2 --testnet-magic 1097911063 | tail -n1 | awk '{print $2}')
+balance=$(cardano-cli query utxo --address $paymentaddr2 --testnet-magic 1097911063 | tail -n1 | awk '{print $3}')
 
 echo "TxHash: $tx_hash"
 echo "TxIx: $tx_ix"
