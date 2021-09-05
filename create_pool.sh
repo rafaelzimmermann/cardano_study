@@ -53,7 +53,7 @@ cat $tmp/tx.draft
 fee=$(cardano-cli transaction calculate-min-fee \
 	 --tx-body-file $tmp/tx.draft \
    --tx-in-count 1 \
-   --tx-out-count 1 \
+   --tx-out-count 2 \
    --witness-count 3 \
    --byron-witness-count 0 \
 	 --testnet-magic 1097911063 \
@@ -67,7 +67,8 @@ echo "New balance: $final_balance = $balance-$amount_ll-$fee"
 cardano-cli transaction build-raw \
   --shelley-era \
 	--tx-in "$tx_hash#$tx_ix" \
-	--tx-out $paymentstakeaddr+$final_balance \
+	--tx-out $paymentstakeaddr+$amount_ll \
+  --tx-out $paymentaddr+$final_balance \
 	--invalid-hereafter $ttl \
 	--fee $fee \
 	--out-file $tmp/tx.raw \
