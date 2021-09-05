@@ -30,7 +30,7 @@ ttl=$(($slot+$MIN_TTL_MINUTES))
 echo "TTL: $ttl"
 
 cardano-cli transaction build-raw \
-	--tx-in $tx_hash#$tx_ix \
+	--tx-in "$tx_hash#$tx_ix" \
 	--tx-out $output_addr+$amount_ll \
 	--tx-out $input_addr+0 \
 	--ttl 0 \
@@ -56,7 +56,7 @@ echo "New balance: $final_balance"
 
 
 cardano-cli transaction build-raw \
-	--tx-in $tx_hash#$tx_ix \
+	--tx-in "$tx_hash#$tx_ix" \
 	--tx-out $output_addr+$amount_ll \
 	--tx-out $input_addr+$final_balance \
 	--ttl $ttl \
