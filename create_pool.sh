@@ -53,22 +53,21 @@ cat $tmp/tx.draft
 fee=$(cardano-cli transaction calculate-min-fee \
 	 --tx-body-file $tmp/tx.draft \
    --tx-in-count 1 \
-   --tx-out-count 2 \
+   --tx-out-count 1 \
    --witness-count 3 \
    --byron-witness-count 0 \
 	 --testnet-magic 1097911063 \
    --protocol-params-file $tmp/protocol.json | awk '{print $1}')
 
 echo "Fee: $fee"
-final_balance=$(($balance-$amount_ll-$fee))
+final_balance=$(($balance-$amount_ll-$fee-2000000))  # There is something wrong here, hard coded 2 ada to fix
 
-echo "New balance: $final_balance = $balance-$amount_ll-$fee"
+echo "New balance: $final_balance = $balance-$amount_ll-$fee-2000000"
 
 cardano-cli transaction build-raw \
   --shelley-era \
 	--tx-in "$tx_hash#$tx_ix" \
-	--tx-out $paymentstakeaddr+$amount_ll \
-  --tx-out $paymentaddr+$final_balance \
+	--tx-out $paymentaddr+$final_balance \
 	--invalid-hereafter $ttl \
 	--fee $fee \
 	--out-file $tmp/tx.raw \
@@ -95,6 +94,7 @@ cardano-cli transaction submit \
 	--tx-file $tmp/tx.signed \
 	--testnet-magic 1097911063
 
+coldvkey=$path/cold.vkey
 pool_id=$(cardano-cli stake-pool id --cold-verification-key-file $coldvkey --output-format "hex")
 
 cardano-cli query ledger-state --testnet-magic 1097911063 | grep publicKey | grep "$pool_id"
