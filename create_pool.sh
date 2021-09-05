@@ -25,6 +25,7 @@ cardano-cli query utxo --address $paymentaddr --testnet-magic 1097911063
 tx_hash=$(cardano-cli query utxo --address $paymentaddr --testnet-magic 1097911063 | tail -n1 | awk '{print $1}')
 tx_ix=$(cardano-cli query utxo --address $paymentaddr --testnet-magic 1097911063 | tail -n1 | awk '{print $2}')
 balance=$(cardano-cli query utxo --address $paymentaddr --testnet-magic 1097911063 | tail -n1 | awk '{print $3}')
+slot=$(cardano-cli query tip --testnet-magic 1097911063 | jq .slot)
 
 echo "TxHash: $tx_hash"
 echo "TxIx: $tx_ix"
