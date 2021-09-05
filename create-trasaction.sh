@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -xe
 
 MIN_TTL_MINUTES=1200
 path=`mktemp -d`
@@ -8,8 +8,8 @@ input_addr=$1
 output_addr=$2
 amount=$3
 signing_key=$4
-amount_ll=$(($amount*1000000))
-
+amount_ll=$(printf "%.0f\n" $(bc -l <<<"$amount*1000000"))
+echo "Amount LL: $amount_ll"
 cardano-cli query protocol-parameters --testnet-magic 1097911063 --out-file $path/protocol.json
 
 slot=$(cardano-cli query tip --testnet-magic 1097911063 | jq .slot)
@@ -49,7 +49,7 @@ fee=$(cardano-cli transaction calculate-min-fee \
 	 --protocol-params-file $path/protocol.json | awk '{print $1}')
 
 echo "Fee: $fee"
-
+amount_ll=$(($amount_ll-$fee))
 final_balance=$(($balance-$amount_ll-$fee))
 
 echo "New balance: $final_balance"
@@ -77,5 +77,3 @@ cat $path/tx.signed
 cardano-cli transaction submit \
 	--tx-file $path/tx.signed \
 	--testnet-magic 1097911063
-
-
