@@ -77,6 +77,7 @@ cat $tmp/tx.raw
 
 cardano-cli transaction view --tx-body-file $tmp/tx.raw
 
+coldskey=$path/cold.skey
 cardano-cli transaction sign \
 	--tx-body-file $tmp/tx.raw \
 	--signing-key-file $paymentskey \

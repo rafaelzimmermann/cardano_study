@@ -47,7 +47,6 @@ cardano-cli node issue-op-cert \
 
 
 coldvkey=$path/cold.vkey
-coldskey=$path/cold.skey
 vrfkey=$path/vrf.vkey
 
 hash=$(cardano-cli stake-pool metadata-hash --pool-metadata-file $metadata)
