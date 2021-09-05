@@ -96,6 +96,7 @@ ttl=$(($slot+$MIN_TTL_MINUTES))
 
 
 cardano-cli transaction build-raw \
+    --shelley-era \
     --tx-in "$tx_hash#$tx_ix" \
     --tx-out $paymentaddr+0 \
     --invalid-hereafter 0 \
@@ -123,6 +124,7 @@ final_balance=$(($balance-$amount_ll-$fee))
 echo "New balance: $final_balance = $balance-$amount_ll-$fee"
 
 cardano-cli transaction build-raw \
+  --shelley-era \
 	--tx-in "$tx_hash#$tx_ix" \
 	--tx-out $paymentaddr+$final_balance \
 	--invalid-hereafter $ttl \
