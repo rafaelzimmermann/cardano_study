@@ -6,9 +6,10 @@ MIN_TTL_MINUTES=1200
 
 path="$1"
 paymentaddr="$2"
-paymentskey="$3"
-stakeskey="$4"  # File
-stake_cert="$5"
+paymentstakeaddr="$3"
+paymentskey="$4"
+stakeskey="$5"  # File
+stake_cert="$6"
 
 tmp=`mktemp -d`
 
@@ -38,7 +39,7 @@ ttl=$(($slot+$MIN_TTL_MINUTES))
 cardano-cli transaction build-raw \
     --shelley-era \
     --tx-in "$tx_hash#$tx_ix" \
-    --tx-out $paymentaddr+0 \
+    --tx-out $paymentstakeaddr+0 \
     --invalid-hereafter 0 \
     --fee 0 \
     --out-file $tmp/tx.draft \
@@ -66,7 +67,7 @@ echo "New balance: $final_balance = $balance-$amount_ll-$fee"
 cardano-cli transaction build-raw \
   --shelley-era \
 	--tx-in "$tx_hash#$tx_ix" \
-	--tx-out $paymentaddr+$final_balance \
+	--tx-out $paymentstakeaddr+$final_balance \
 	--invalid-hereafter $ttl \
 	--fee $fee \
 	--out-file $tmp/tx.raw \
