@@ -46,8 +46,8 @@ cat $path/tx.raw
 fee=$(cardano-cli transaction calculate-min-fee \
 	 --tx-body-file $path/tx.raw \
 	 --tx-in-count 1 \
-	 --tx-out-count 2 \
-	 --witness-count 2 \
+	 --tx-out-count 1 \
+	 --witness-count 1 \
 	 --byron-witness-count 0 \
 	 --testnet-magic 1097911063 \
 	 --protocol-params-file $path/protocol.json | awk '{print $1}')
