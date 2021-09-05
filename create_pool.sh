@@ -115,7 +115,7 @@ fee=$(cardano-cli transaction calculate-min-fee \
    --witness-count 3 \
    --byron-witness-count 0 \
 	 --testnet-magic 1097911063 \
-	 --protocol-params-file $tmp/protocol.json | awk '{print $1}')
+   --protocol-params-file $tmp/protocol.json | awk '{print $1}')
 
 echo "Fee: $fee"
 final_balance=$(($balance-$amount_ll-$fee))
@@ -134,6 +134,8 @@ cardano-cli transaction build-raw \
 
 cat $tmp/tx.raw
 
+cardano-cli transaction view --tx-body-file $tmp/tx.raw
+
 cardano-cli transaction sign \
 	--tx-body-file $tmp/tx.raw \
 	--signing-key-file $paymentskey \
@@ -148,6 +150,6 @@ cardano-cli transaction submit \
 	--tx-file $tmp/tx.signed \
 	--testnet-magic 1097911063
 
-cardano-cli stake-pool id --cold-verification-key-file $coldvkey --output-format "hex"
+pool_id=$(cardano-cli stake-pool id --cold-verification-key-file $coldvkey --output-format "hex")
 
-# cardano-cli query ledger-state --testnet-magic 1097911063 | grep publicKey | grep <poolId>
+cardano-cli query ledger-state --testnet-magic 1097911063 | grep publicKey | grep "$pool_id"
